@@ -12,7 +12,7 @@ export class BlockchainService {
 
   private initializeProviders() {
     const rpcUrls = {
-      1: process.env.ETHEREUM_RPC_URL || process.env.ALCHEMY_API_URL || 'https://eth.llamarpc.com',
+      1: 'https://eth-mainnet.g.alchemy.com/v2/QMEap6jyoJPkSgcqeWBIHfSbWv_zFiog',
       56: process.env.BSC_RPC_URL || 'https://bsc-dataseed1.binance.org',
       137: process.env.POLYGON_RPC_URL || 'https://polygon-rpc.com',
       42161: process.env.ARBITRUM_RPC_URL || 'https://arb1.arbitrum.io/rpc',

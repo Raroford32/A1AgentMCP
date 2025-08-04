@@ -1,6 +1,6 @@
 # Overview
 
-This is a sophisticated blockchain security analysis platform that combines a React frontend with an Express.js backend to analyze smart contracts for vulnerabilities. The system uses the Model Context Protocol (MCP) architecture to orchestrate six specialized analysis tools that work together to identify potential exploits in smart contracts. The platform provides real-time monitoring, automated testing, and comprehensive reporting of security findings across multiple blockchain networks.
+This is a production-grade backend implementing A1's 6 blockchain security analysis tools as Model Context Protocol (MCP) servers. The system provides real-time vulnerability discovery and exploitation capabilities through SSE endpoints and direct API access. Built with Express.js, PostgreSQL, and comprehensive Etherscan v2 API integration for autonomous smart contract analysis across multiple blockchain networks.
 
 # User Preferences
 
