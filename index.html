@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Agent MCP Tools - API Documentation</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #00ff00;
+        }
+        h1 { color: #00ff00; }
+        h2 { color: #00cc00; margin-top: 30px; }
+        .endpoint {
+            background: #1a1a1a;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+        }
+        .method { 
+            color: #ffff00;
+            font-weight: bold;
+        }
+        .url {
+            color: #00ffff;
+        }
+        .params {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .example {
+            background: #0f0f0f;
+            padding: 10px;
+            margin-top: 10px;
+            border-left: 3px solid #00ff00;
+        }
+        pre {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>A1 Agent MCP Tools - Production Backend</h1>
+    <p>6 blockchain security analysis tools implementing A1's vulnerability discovery system.</p>
+    
+    <h2>Tool Execution Endpoints</h2>
+    
+    <div class="endpoint">
+        <span class="method">POST</span> <span class="url">/api/tools/execute/source-code-fetcher</span>
+        <div class="params">
+            <strong>Body Parameters:</strong>
+            <pre>{
+  "contractAddress": "0x...",
+  "chainId": 1
+}</pre>
+        </div>
+        <div class="example">
+            <strong>Example:</strong>
+            <pre>curl -X POST http://localhost:5000/api/tools/execute/source-code-fetcher \
+  -H "Content-Type: application/json" \
+  -d '{"contractAddress":"0x1234...","chainId":1}'</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">POST</span> <span class="url">/api/tools/execute/constructor-parameters</span>
+        <div class="params">
+            <strong>Body Parameters:</strong>
+            <pre>{
+  "contractAddress": "0x...",
+  "chainId": 1
+}</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">POST</span> <span class="url">/api/tools/execute/state-reader</span>
+        <div class="params">
+            <strong>Body Parameters:</strong>
+            <pre>{
+  "contractAddress": "0x...",
+  "chainId": 1,
+  "functionName": "balanceOf",
+  "params": ["0x..."],
+  "blockNumber": "latest"
+}</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">POST</span> <span class="url">/api/tools/execute/code-sanitizer</span>
+        <div class="params">
+            <strong>Body Parameters:</strong>
+            <pre>{
+  "sourceCode": "contract MyContract { ... }",
+  "preserveComments": false,
+  "removeDeadCode": true
+}</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">POST</span> <span class="url">/api/tools/execute/concrete-execution</span>
+        <div class="params">
+            <strong>Body Parameters:</strong>
+            <pre>{
+  "exploitContract": "contract Exploit { ... }",
+  "targetAddress": "0x...",
+  "chainId": 1,
+  "blockNumber": "latest"
+}</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">POST</span> <span class="url">/api/tools/execute/revenue-normalizer</span>
+        <div class="params">
+            <strong>Body Parameters:</strong>
+            <pre>{
+  "tokens": [
+    {"address": "0x...", "amount": "1000000000000000000", "symbol": "ETH"}
+  ],
+  "chainId": 1,
+  "blockNumber": "latest"
+}</pre>
+        </div>
+    </div>
+
+    <h2>SSE (Server-Sent Events) Endpoints</h2>
+    <p>Connect to these endpoints to receive real-time updates from tool executions:</p>
+    
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="url">/sse/tools/source-code-fetcher</span>
+    </div>
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="url">/sse/tools/constructor-parameters</span>
+    </div>
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="url">/sse/tools/state-reader</span>
+    </div>
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="url">/sse/tools/code-sanitizer</span>
+    </div>
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="url">/sse/tools/concrete-execution</span>
+    </div>
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="url">/sse/tools/revenue-normalizer</span>
+    </div>
+
+    <h2>SSE Connection Example</h2>
+    <div class="example">
+        <pre>const eventSource = new EventSource('http://localhost:5000/sse/tools/source-code-fetcher');
+
+eventSource.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log('Tool update:', data);
+};
+
+eventSource.onerror = (error) => {
+  console.error('SSE error:', error);
+};</pre>
+    </div>
+
+    <h2>MCP Server Status</h2>
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="url">/api/mcp/status</span>
+        <div class="example">
+            <strong>Returns current status of all tools and active sessions</strong>
+        </div>
+    </div>
+
+    <h2>Required Environment Variables</h2>
+    <pre>ETHERSCAN_API_KEY=your_etherscan_api_key
+DATABASE_URL=postgresql://...</pre>
+
+    <h2>Supported Chains</h2>
+    <ul>
+        <li>1 - Ethereum</li>
+        <li>56 - BSC</li>
+        <li>137 - Polygon</li>
+        <li>42161 - Arbitrum</li>
+        <li>10 - Optimism</li>
+        <li>8453 - Base</li>
+    </ul>
+</body>
+</html>
